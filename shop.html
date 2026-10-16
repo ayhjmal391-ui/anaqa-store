@@ -3,183 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المتجر - أناقة</title>
+<title>متجر أناقة</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#ffe4ec}
-.header{background:#e93d8a;color:white;text-align:center;padding:20px}
-.cat{background:#fff;margin:15px 15px 0 15px;border-radius:15px;padding:10px 15px;font-weight:bold;color:#e93d8a}
-.products{padding:10px 15px}
-.product{background:white;border-radius:20px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.btn{background:#e93d8a;color:white;border:none;padding:12px 22px;border-radius:25px}
-.cart-box{background:white;margin:15px;border-radius:20px;padding:20px;text-align:center;position:sticky;bottom:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-.btn-order{background:#25D366;color:white;padding:15px 30px;border-radius:30px;text-decoration:none;display:block;font-weight:bold;margin-top:10px}
+body{margin:0;font-family:sans-serif;background:#ffeef3}
+.top{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:white;position:sticky;top:0;z-index:10;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.tabs{display:flex;gap:8px;padding:12px;overflow:auto}
+.tab{padding:8px 16px;border-radius:20px;background:white;border:1px solid #e93d8a;color:#e93d8a;white-space:nowrap;cursor:pointer}
+.tab.active{background:#e93d8a;color:white}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+.card{background:white;border-radius:18px;overflow:hidden}
+.card img{width:100%;height:200px;object-fit:cover}
+.info{padding:10px;text-align:center}
+.price{color:#e93d8a;font-weight:bold}
+.btn-add{background:#e93d8a;color:white;border:none;width:100%;padding:10px;border-radius:12px;margin-top:6px;font-weight:bold}
+#cart{position:fixed;bottom:0;left:0;right:0;background:white;padding:12px;border-radius:20px 20px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,.15);display:none}
 </style>
 </head>
 <body>
-<div class="header">
-<a href="index.html" style="color:white;text-decoration:none">⬅ الرئيسية</a>
-<h2>🛍️ متجر أناقة</h2>
+<div class="top">
+<a href="index.html" style="text-decoration:none;color:#e93d8a">← رجوع</a>
+<div style="font-weight:bold;color:#e93d8a">متجر أناقة</div>
+<div onclick="showCart()">🛒 <span id="count">0</span></div>
 </div>
-<div class="cat">👗 قسم الفساتين</div>
-<div class="products">
-<div class="product"><div><h3>👗 فستان سهرة أسود</h3><p>15000 جنيه</p></div><button class="btn" onclick="add('فستان سهرة أسود')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 فستان كاجوال زهري</h3><p>8000 جنيه</p></div><button class="btn" onclick="add('فستان كاجوال')">+ إضافة</button></div>
-<div class="product"><div><h3>🧕 عباية أناقة</h3><p>12000 جنيه</p></div><button class="btn" onclick="add('عباية أناقة')">+ إضافة</button></div>
-<div class="product"><div><h3>👧 فستان بناتي</h3><p>7000 جنيه</p></div><button class="btn" onclick="add('فستان بناتي')">+ إضافة</button></div>
+
+<div class="tabs">
+<div class="tab active" onclick="filterCat('all',this)">الكل</div>
+<div class="tab" onclick="filterCat('makeup',this)">ميكب 💄</div>
+<div class="tab" onclick="filterCat('dress',this)">فساتين 👗</div>
 </div>
-<div class="cat">💄 قسم الميكب</div>
-<div class="products">
-<div class="product"><div><h3>💄 روج ثابت</h3><p>2500 جنيه</p></div><button class="btn" onclick="add('روج')">+ إضافة</button></div>
-<div class="product"><div><h3>✨ فاونديشن</h3><p>4500 جنيه</p></div><button class="btn" onclick="add('فاونديشن')">+ إضافة</button></div>
-<div class="product"><div><h3>👁️ مسكرة</h3><p>3000 جنيه</p></div><button class="btn" onclick="add('مسكرة')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 بلاشر</h3><p>2000 جنيه</p></div><button class="btn" onclick="add('بلاشر')">+ إضافة</button></div>
+
+<div class="grid" id="grid"></div>
+
+<div id="cart">
+<div style="display:flex;justify-content:space-between;font-weight:bold"><span>سلة المشتريات</span><span onclick="hideCart()" style="cursor:pointer">✕</span></div>
+<div id="cartItems" style="margin:10px 0"></div>
+<button onclick="sendWA()" style="width:100%;padding:14px;background:#25D366;color:white;border:none;border-radius:12px;font-weight:bold">إرسال الطلب واتساب</button>
 </div>
-<div class="cart-box">
-<h3>🛒 سلتك</h3>
-<div id="list">لسه فاضية - دوسي + إضافة فوق</div>
-<a id="wa" class="btn-order" href="#">اطلبي واتساب 💬</a>
-</div>
+
 <script>
-let c=[];
-function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المتجر - أناقة</title>
-<style>
-body{margin:0;font-family:sans-serif;background:#ffe4ec}
-.header{background:#e93d8a;color:white;text-align:center;padding:20px}
-.cat{background:#fff;margin:15px 15px 0 15px;border-radius:15px;padding:10px 15px;font-weight:bold;color:#e93d8a}
-.products{padding:10px 15px}
-.product{background:white;border-radius:20px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.btn{background:#e93d8a;color:white;border:none;padding:12px 22px;border-radius:25px}
-.cart-box{background:white;margin:15px;border-radius:20px;padding:20px;text-align:center;position:sticky;bottom:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-.btn-order{background:#25D366;color:white;padding:15px 30px;border-radius:30px;text-decoration:none;display:block;font-weight:bold;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="header">
-<a href="index.html" style="color:white;text-decoration:none">⬅ الرئيسية</a>
-<h2>🛍️ متجر أناقة</h2>
-</div>
-<div class="cat">👗 قسم الفساتين</div>
-<div class="products">
-<div class="product"><div><h3>👗 فستان سهرة أسود</h3><p>15000 جنيه</p></div><button class="btn" onclick="add('فستان سهرة أسود')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 فستان كاجوال زهري</h3><p>8000 جنيه</p></div><button class="btn" onclick="add('فستان كاجوال')">+ إضافة</button></div>
-<div class="product"><div><h3>🧕 عباية أناقة</h3><p>12000 جنيه</p></div><button class="btn" onclick="add('عباية أناقة')">+ إضافة</button></div>
-<div class="product"><div><h3>👧 فستان بناتي</h3><p>7000 جنيه</p></div><button class="btn" onclick="add('فستان بناتي')">+ إضافة</button></div>
-</div>
-<div class="cat">💄 قسم الميكب</div>
-<div class="products">
-<div class="product"><div><h3>💄 روج ثابت</h3><p>2500 جنيه</p></div><button class="btn" onclick="add('روج')">+ إضافة</button></div>
-<div class="product"><div><h3>✨ فاونديشن</h3><p>4500 جنيه</p></div><button class="btn" onclick="add('فاونديشن')">+ إضافة</button></div>
-<div class="product"><div><h3>👁️ مسكرة</h3><p>3000 جنيه</p></div><button class="btn" onclick="add('مسكرة')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 بلاشر</h3><p>2000 جنيه</p></div><button class="btn" onclick="add('بلاشر')">+ إضافة</button></div>
-</div>
-<div class="cart-box">
-<h3>🛒 سلتك</h3>
-<div id="list">لسه فاضية - دوسي + إضافة فوق</div>
-<a id="wa" class="btn-order" href="#">اطلبي واتساب 💬</a>
-</div>
-<script>
-let c=[];
-function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المتجر - أناقة</title>
-<style>
-body{margin:0;font-family:sans-serif;background:#ffe4ec}
-.header{background:#e93d8a;color:white;text-align:center;padding:20px}
-.cat{background:#fff;margin:15px 15px 0 15px;border-radius:15px;padding:10px 15px;font-weight:bold;color:#e93d8a}
-.products{padding:10px 15px}
-.product{background:white;border-radius:20px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.btn{background:#e93d8a;color:white;border:none;padding:12px 22px;border-radius:25px}
-.cart-box{background:white;margin:15px;border-radius:20px;padding:20px;text-align:center;position:sticky;bottom:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-.btn-order{background:#25D366;color:white;padding:15px 30px;border-radius:30px;text-decoration:none;display:block;font-weight:bold;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="header">
-<a href="index.html" style="color:white;text-decoration:none">⬅ الرئيسية</a>
-<h2>🛍️ متجر أناقة</h2>
-</div>
-<div class="cat">👗 قسم الفساتين</div>
-<div class="products">
-<div class="product"><div><h3>👗 فستان سهرة أسود</h3><p>15000 جنيه</p></div><button class="btn" onclick="add('فستان سهرة أسود')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 فستان كاجوال زهري</h3><p>8000 جنيه</p></div><button class="btn" onclick="add('فستان كاجوال')">+ إضافة</button></div>
-<div class="product"><div><h3>🧕 عباية أناقة</h3><p>12000 جنيه</p></div><button class="btn" onclick="add('عباية أناقة')">+ إضافة</button></div>
-<div class="product"><div><h3>👧 فستان بناتي</h3><p>7000 جنيه</p></div><button class="btn" onclick="add('فستان بناتي')">+ إضافة</button></div>
-</div>
-<div class="cat">💄 قسم الميكب</div>
-<div class="products">
-<div class="product"><div><h3>💄 روج ثابت</h3><p>2500 جنيه</p></div><button class="btn" onclick="add('روج')">+ إضافة</button></div>
-<div class="product"><div><h3>✨ فاونديشن</h3><p>4500 جنيه</p></div><button class="btn" onclick="add('فاونديشن')">+ إضافة</button></div>
-<div class="product"><div><h3>👁️ مسكرة</h3><p>3000 جنيه</p></div><button class="btn" onclick="add('مسكرة')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 بلاشر</h3><p>2000 جنيه</p></div><button class="btn" onclick="add('بلاشر')">+ إضافة</button></div>
-</div>
-<div class="cart-box">
-<h3>🛒 سلتك</h3>
-<div id="list">لسه فاضية - دوسي + إضافة فوق</div>
-<a id="wa" class="btn-order" href="#">اطلبي واتساب 💬</a>
-</div>
-<script>
-let c=[];
-function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>المتجر - أناقة</title>
-<style>
-body{margin:0;font-family:sans-serif;background:#ffe4ec}
-.header{background:#e93d8a;color:white;text-align:center;padding:20px}
-.cat{background:#fff;margin:15px 15px 0 15px;border-radius:15px;padding:10px 15px;font-weight:bold;color:#e93d8a}
-.products{padding:10px 15px}
-.product{background:white;border-radius:20px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.btn{background:#e93d8a;color:white;border:none;padding:12px 22px;border-radius:25px}
-.cart-box{background:white;margin:15px;border-radius:20px;padding:20px;text-align:center;position:sticky;bottom:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
-.btn-order{background:#25D366;color:white;padding:15px 30px;border-radius:30px;text-decoration:none;display:block;font-weight:bold;margin-top:10px}
-</style>
-</head>
-<body>
-<div class="header">
-<a href="index.html" style="color:white;text-decoration:none">⬅ الرئيسية</a>
-<h2>🛍️ متجر أناقة</h2>
-</div>
-<div class="cat">👗 قسم الفساتين</div>
-<div class="products">
-<div class="product"><div><h3>👗 فستان سهرة أسود</h3><p>15000 جنيه</p></div><button class="btn" onclick="add('فستان سهرة أسود')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 فستان كاجوال زهري</h3><p>8000 جنيه</p></div><button class="btn" onclick="add('فستان كاجوال')">+ إضافة</button></div>
-<div class="product"><div><h3>🧕 عباية أناقة</h3><p>12000 جنيه</p></div><button class="btn" onclick="add('عباية أناقة')">+ إضافة</button></div>
-<div class="product"><div><h3>👧 فستان بناتي</h3><p>7000 جنيه</p></div><button class="btn" onclick="add('فستان بناتي')">+ إضافة</button></div>
-</div>
-<div class="cat">💄 قسم الميكب</div>
-<div class="products">
-<div class="product"><div><h3>💄 روج ثابت</h3><p>2500 جنيه</p></div><button class="btn" onclick="add('روج')">+ إضافة</button></div>
-<div class="product"><div><h3>✨ فاونديشن</h3><p>4500 جنيه</p></div><button class="btn" onclick="add('فاونديشن')">+ إضافة</button></div>
-<div class="product"><div><h3>👁️ مسكرة</h3><p>3000 جنيه</p></div><button class="btn" onclick="add('مسكرة')">+ إضافة</button></div>
-<div class="product"><div><h3>🌸 بلاشر</h3><p>2000 جنيه</p></div><button class="btn" onclick="add('بلاشر')">+ إضافة</button></div>
-</div>
-<div class="cart-box">
-<h3>🛒 سلتك</h3>
-<div id="list">لسه فاضية - دوسي + إضافة فوق</div>
-<a id="wa" class="btn-order" href="#">اطلبي واتساب 💬</a>
-</div>
-<script>
-let c=[];
-function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://wa.me/249905190175?text='+encodeURIComponent(t);}
-</script>
-</body>
-</html>(t);}
-</script>
-</body>
-</html>(t);}
-</script>
-</body>
-</html>(t);}
+let products=[
+{name:"روج مات ثابت",price:3500,cat:"makeup",img:"https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=500"},
+{name:"فاونديشن أصلي",price:7500,cat:"makeup",img:"https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=500"},
+{name:"ماسكرا حواجب",price:2800,cat:"makeup",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500"},
+{name:"فستان سهرة أنيق",price:12500,cat:"dress",img:"https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500"},
+{name:"عباية خليجية",price:18000,cat:"dress",img:"https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"},
+{name:"طقم كاجوال",price:9500,cat:"dress",img:"https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=500"}
+];
+let cart=[];
+function render(list=products){
+document.getElementById('grid').innerHTML=list.map((p,i)=>`
+<div class="card"><img src="${p.img}"><div class="info"><div>${p.name}</div><div class="price">SDG ${p.price}</div><button class="btn-add" onclick="add(${products.indexOf(p)})">+ إضافة للسلة</button></div></div>
+`).join('');
+}
+function filterCat(c,el){
+document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+if(c==='all')render(); else render(products.filter(p=>p.cat===c));
+}
+function add(i){cart.push(products[i]);document.getElementById('count').innerText=cart.length;alert('تمت الإضافة للسلة 🛒')}
+function showCart(){
+if(cart.length===0)return alert('السلة فاضية');
+document.getElementById('cart').style.display='block';
+document.getElementById('cartItems').innerHTML=cart.map(c=>`<div style="display:flex;justify-content:space-between;padding:6px 0"><span>${c.name}</span><span>SDG ${c.price}</span></div>`).join('');
+}
+function hideCart(){document.getElementById('cart').style.display='none'}
+function sendWA(){
+let total=cart.reduce((s,c)=>s+Number(c.price),0);
+let txt=cart.map(c=>`- ${c.name} (${c.price})`).join('\n');
+let msg=`مرحبا أناقة عايزة اطلب:\n${txt}\n\nالمجموع: SDG ${total}`;
+window.open('https://wa.me/249905190175?text='+encodeURIComponent(msg),'_blank');
+}
+render();
 </script>
 </body>
 </html>
