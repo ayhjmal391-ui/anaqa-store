@@ -3,35 +3,40 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ANAQA أناقة</title>
+<title>أناقة - جمالك يبدأ من هنا</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#ffeef3}
-.top{display:flex;justify-content:space-between;align-items:center;padding:12px 15px;background:white;position:sticky;top:0;box-shadow:0 2px 10px rgba(0,0,0,0.05)}
-.logo{color:#e93d8a;font-weight:bold;font-size:20px}
-#secretBtn{display:none;padding:8px 14px;border-radius:20px;background:#222;color:white;text-decoration:none;font-size:13px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
-.card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
-.card img{width:100%;height:220px;object-fit:cover;background:#eee}
-.info{padding:10px;text-align:center}
-.price{color:#e93d8a;font-weight:bold;margin:6px 0}
-.btn-wa{background:#25D366;color:white;border:none;width:100%;padding:11px;border-radius:12px;font-weight:bold}
+body{margin:0;font-family:'Tajawal',sans-serif;background:#ffe4ec}
+.header{background:#e93d8a;padding:50px 20px;text-align:center;color:white;border-radius:0 0 30px 30px}
+.header h1{margin:0;font-size:32px}
+.header p{margin-top:12px;opacity:.9}
+.card{background:white;margin:18px;padding:28px;border-radius:20px;text-align:center;box-shadow:0 6px 18px rgba(233,61,138,.12)}
+.card h2{color:#e93d8a;margin:0 0 10px 0}
+.card p{color:#555;margin:0;font-size:14px;line-height:1.6}
+.btn{margin:18px;display:block;background:#e93d8a;color:white;text-align:center;padding:16px;border-radius:30px;text-decoration:none;font-weight:bold;font-size:18px;box-shadow:0 6px 18px rgba(233,61,138,.3)}
 </style>
 </head>
 <body>
-<div class="top">
-<a id="secretBtn" href="admin.html">لوحتي 🔐</a>
-<div class="logo" onclick="clickLogo()">ANAQA أناقة</div>
-<div>🛍️</div>
+<div class="header">
+<h1>💄 أناقة 💗</h1>
+<p>جمالك يبدأ من هنا</p>
 </div>
-<div class="grid">
-<div class="card"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500"><div class="info"><div>فستان سهرة أنيق</div><div class="price">SDG 12500</div><button class="btn-wa" onclick="order('فستان سهرة أنيق - 12500')">طلب واتساب</button></div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=500"><div class="info"><div>عباية خليجية</div><div class="price">SDG 18000</div><button class="btn-wa" onclick="order('عباية خليجية - 18000')">طلب واتساب</button></div></div>
-<div class="card"><img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=500"><div class="info"><div>طقم كاجوال</div><div class="price">SDG 9500</div><button class="btn-wa" onclick="order('طقم كاجوال - 9500')">طلب واتساب</button></div></div>
+
+<div class="card">
+<h2>مرحباً بيكِ في أناقة</h2>
+<p>كل ما يخص الجمال والمكياج في مكان واحد.</p>
 </div>
-<script>
-let clicks=0;
-function clickLogo(){clicks++;if(clicks>=5){document.getElementById('secretBtn').style.display='block';alert('أهلاً ست المتجر! ظهر زر لوحتي 🔐');clicks=0;}setTimeout(()=>clicks=0,3000);}
-function order(n){window.open('https://wa.me/249905190175?text='+encodeURIComponent('مرحبا أناقة عايزة: '+n),'_blank')}
-</script>
+
+<div class="card">
+<h2>💋 عالم المكياج</h2>
+<p>اكتشفي الألوان والأفكار والإطلالات الجميلة.</p>
+</div>
+
+<div class="card">
+<h2>🌸 نصائح الجمال</h2>
+<p>نصائح يومية لبشرة نضرة ومكياج ثابت.</p>
+</div>
+
+<a class="btn" href="shop.html">ادخلي المتجر 🛍️</a>
+<a href="admin.html" style="display:block;text-align:center;color:#e93d8a;text-decoration:none;margin:10px;font-size:12px;opacity:.4">دخول صاحبة المتجر</a>
 </body>
 </html>
