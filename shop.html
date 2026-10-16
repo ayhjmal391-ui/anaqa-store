@@ -41,7 +41,53 @@ body{margin:0;font-family:sans-serif;background:#ffe4ec}
 </div>
 <script>
 let c=[];
+function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>المتجر - أناقة</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#ffe4ec}
+.header{background:#e93d8a;color:white;text-align:center;padding:20px}
+.cat{background:#fff;margin:15px 15px 0 15px;border-radius:15px;padding:10px 15px;font-weight:bold;color:#e93d8a}
+.products{padding:10px 15px}
+.product{background:white;border-radius:20px;padding:18px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.btn{background:#e93d8a;color:white;border:none;padding:12px 22px;border-radius:25px}
+.cart-box{background:white;margin:15px;border-radius:20px;padding:20px;text-align:center;position:sticky;bottom:10px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+.btn-order{background:#25D366;color:white;padding:15px 30px;border-radius:30px;text-decoration:none;display:block;font-weight:bold;margin-top:10px}
+</style>
+</head>
+<body>
+<div class="header">
+<a href="index.html" style="color:white;text-decoration:none">⬅ الرئيسية</a>
+<h2>🛍️ متجر أناقة</h2>
+</div>
+<div class="cat">👗 قسم الفساتين</div>
+<div class="products">
+<div class="product"><div><h3>👗 فستان سهرة أسود</h3><p>15000 جنيه</p></div><button class="btn" onclick="add('فستان سهرة أسود')">+ إضافة</button></div>
+<div class="product"><div><h3>🌸 فستان كاجوال زهري</h3><p>8000 جنيه</p></div><button class="btn" onclick="add('فستان كاجوال')">+ إضافة</button></div>
+<div class="product"><div><h3>🧕 عباية أناقة</h3><p>12000 جنيه</p></div><button class="btn" onclick="add('عباية أناقة')">+ إضافة</button></div>
+<div class="product"><div><h3>👧 فستان بناتي</h3><p>7000 جنيه</p></div><button class="btn" onclick="add('فستان بناتي')">+ إضافة</button></div>
+</div>
+<div class="cat">💄 قسم الميكب</div>
+<div class="products">
+<div class="product"><div><h3>💄 روج ثابت</h3><p>2500 جنيه</p></div><button class="btn" onclick="add('روج')">+ إضافة</button></div>
+<div class="product"><div><h3>✨ فاونديشن</h3><p>4500 جنيه</p></div><button class="btn" onclick="add('فاونديشن')">+ إضافة</button></div>
+<div class="product"><div><h3>👁️ مسكرة</h3><p>3000 جنيه</p></div><button class="btn" onclick="add('مسكرة')">+ إضافة</button></div>
+<div class="product"><div><h3>🌸 بلاشر</h3><p>2000 جنيه</p></div><button class="btn" onclick="add('بلاشر')">+ إضافة</button></div>
+</div>
+<div class="cart-box">
+<h3>🛒 سلتك</h3>
+<div id="list">لسه فاضية - دوسي + إضافة فوق</div>
+<a id="wa" class="btn-order" href="#">اطلبي واتساب 💬</a>
+</div>
+<script>
+let c=[];
 function add(n){c.push(n);document.getElementById('list').innerHTML=c.join('<br>')+'<br><b>العدد:'+c.length+'</b>';let t='مرحبا أناقة عايزة: '+c.join(' , ');document.getElementById('wa').href='https://wa.me/249905190175?text='+encodeURIComponent(t);}
+</script>
+</body>
+</html>(t);}
 </script>
 </body>
 </html>
